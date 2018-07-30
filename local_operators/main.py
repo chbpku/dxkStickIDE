@@ -1,11 +1,8 @@
 from microbit import *
-from led import *
 from oled import *
+from ultrasonic import *
 
 while 1:
-    set_led_on(22)
-    display_text(23,0,0,'aaaaaaaa')
-    sleep(1000)
-    display_text(23,0,0,'bbbbbbbb')
-    set_led_off(22)
+    data=get_distance_val(22)
+    display_text(23,0,0,data)
     sleep(1000)

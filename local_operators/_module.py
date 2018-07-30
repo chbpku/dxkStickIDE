@@ -1,8 +1,11 @@
 from microbit import i2c
-def command(slot, bseq, returnsize=0):
+def command(slot, bseq, returnsize=0, raw=False):
     i2c.write(slot, bseq)
     if returnsize:
-        return int.from_bytes(i2c.read(slot, returnsize), 'big')
+        data=i2c.read(slot, returnsize)
+        if raw:
+            return data
+        return int.from_bytes(data, 'big')
 def get_id(addr):
     i2c.write('get_id', bseq)
     return "%02x%02x%02x%02x" % tuple(i2c.read(slot(addr, 1), 4))
