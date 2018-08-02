@@ -1,5 +1,5 @@
 from _module import *
-def display_text(addr,y,x,string):
+def show(addr,y,x,string):
     if isinstance(string,str):
         command(slot(addr), b'DisplayGB2312,%d,%d,%s'%(y,x,string))
     else:
