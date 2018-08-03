@@ -1,5 +1,5 @@
 from _module import *
-def on(addr):
-    command(slot(addr), b'set_led_on')
-def off(addr):
-    command(slot(addr), b'set_led_off')
+def on(addr=None):
+  command(slot(addr,3),b'set_led_on')
+def off(addr=None):
+  command(slot(addr,3),b'set_led_off')

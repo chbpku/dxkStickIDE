@@ -1,7 +1,8 @@
 import os, microfs, sys
 
 code_dir = os.path.join(os.path.dirname(__file__), 'main.py')
-print('写入当前代码...', flush=True, end='')
+print('写入当前代码...', end='')
+sys.stdout.flush()
 try:
     microfs.put(code_dir)
 except Exception as e:
