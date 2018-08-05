@@ -1,5 +1,5 @@
 from microbit import *
-from _module import get_type
+from mb import get_type,channel
 ta,tb=0,0
 display.clear()
 while 1:
@@ -24,15 +24,19 @@ while 1:
     if ta>tb:
         ta,tb=tb,ta
     if ta==1 and tb==2:
-        # 测试OLED、温湿度
-        display.show(Image.HAPPY)
+        # 测试OLED、温湿度、拨码
         import oled,temp_humi
+        display.clear()
         while not (button_a.get_presses()+button_b.get_presses()):
+            chn=channel()
+            ptr=1
+            for i in range(10):
+                display.set_pixel(i%4,i//4,9*bool(chn&ptr))
+                ptr*=2
             oled.clear()
             temp,humi=temp_humi.temp_humi()
             oled.show(0,0,b'\xce\xc2\xb6\xc8\xa3\xba%d\xa1\xe6'%temp)
             oled.show(2,0,b'\xca\xaa\xb6\xc8\xa3\xba%d%%'%humi)
-            sleep(500)
             temp,humi=temp_humi.temp(),temp_humi.humi()
             oled.show(4,0,b'\xce\xc2\xb6\xc8\xa3\xba%d\xa1\xe6'%temp)
             oled.show(6,0,b'\xca\xaa\xb6\xc8\xa3\xba%d%%'%humi)
@@ -40,6 +44,7 @@ while 1:
         break
     elif ta==3 and tb==4:
         # 测试LED、电位器
+        display.show(Image.HAPPY)
         import led,poten
         led.off()
         flag,counter=0,0
@@ -68,18 +73,8 @@ while 1:
                 else:
                     display.set_pixel(i%5,i//5,int(9*l/410))
                     break
-            counter+=10
-            if counter>=u:
-                counter-=u
-                music.pitch(1000,100,wait=0)
-            for i in range(10):
-                if u>=10:
-                    display.set_pixel(i%5,i//5+3,9)
-                    u-=10
-                else:
-                    display.set_pixel(i%5,i//5+3,int(9*u/10))
-                    break
-            sleep(50)
+            music.pitch(1000-2*u,50,wait=0)
+            sleep(100)
         break
     elif ta==6 and tb==7:
         # 测试声音、手柄（延长）
@@ -105,6 +100,4 @@ while 1:
         break
     else:
         sleep(10)
-
-
-
+display.clear()

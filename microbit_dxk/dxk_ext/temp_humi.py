@@ -1,4 +1,4 @@
-from _module import *
+from mb import *
 def temp(addr=None):
   return command(slot(addr,2),b'get_temp',1)
 def humi(addr=None):

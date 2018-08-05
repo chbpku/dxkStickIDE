@@ -1,24 +1,33 @@
 import os, uflash, microfs, sys
 
 # 1. uflash empty python environment
-print('写入Python解释器...',end='',flush=True)
+print('写入Python解释器...')
 try:
     uflash.flash()
 except Exception as e:
     sys.stderr.write('\n%s: %s' % (type(e).__name__, str(e)))
     sys.exit(1)
-print('完成')
 
 # 2. find & put required files
 dxk_folder = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..', 'dxk_ext'))
 
+commands=[]
 for file in os.listdir(dxk_folder):
     if file.endswith('.py'):
-        print('加入模块: %s...' % file, end='', flush=True)
-        try:
-            microfs.put(os.path.join(dxk_folder, file))
-        except Exception as e:
-            sys.stderr.write('\n%s: %s' % (type(e).__name__, str(e)))
-            sys.exit(1)
-        print('完成')
+        print('加入模块: %s...' % file)
+        commands.append("fd = open('{}', 'wb')".format(file))
+        commands.append("f = fd.write")
+        with open(os.path.join(dxk_folder, file), 'rb') as local:
+            content = local.read()
+        while content:
+            line = content[:64]
+            if microfs.PY2:
+                commands.append('f(b' + repr(line) + ')')
+            else:
+                commands.append('f(' + repr(line) + ')')
+            content = content[64:]
+        commands.append('fd.close()')
+print('写入接口文件...')
+microfs.execute(commands)
+print('完成')

@@ -1,4 +1,4 @@
-from _module import *
+from mb import *
 from microbit import sleep
 def show(y,x,string,addr=None):
   if isinstance(string,str):

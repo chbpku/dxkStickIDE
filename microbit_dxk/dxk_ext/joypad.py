@@ -1,4 +1,4 @@
-from _module import *
+from mb import *
 def values(addr=None):
   data=command(slot(addr,7),b'get_key_val',9,True)
   x,y=data[5]*256+data[6],data[7]*256+data[8]

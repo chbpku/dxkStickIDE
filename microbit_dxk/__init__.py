@@ -442,7 +442,17 @@ def load_early_plugin():
 def load_plugin():
     """Adds flash button on GUI and commands under Tools menu."""
     image_path = os.path.join(
-        os.path.dirname(__file__), "res", "run.flash_microbit.gif")
+        os.path.dirname(__file__), "res", "run.%s.gif")
+
+    get_workbench().add_command(
+        "flashmicrobitrepl",
+        "tools",
+        "写入运行环境",
+        flash_repl,
+        group=120,
+        image_filename=image_path%'flash_env',
+        include_in_toolbar=False)
+
     get_workbench().add_command(
         "flashmicrobit",
         "tools",
@@ -451,17 +461,8 @@ def load_plugin():
         flash_current_script_enabled,
         default_sequence="<Control-m>",
         group=120,
-        image_filename=image_path,
+        image_filename=image_path%'flash_code',
         include_in_toolbar=True)
-
-    get_workbench().add_command(
-        "flashmicrobitrepl",
-        "tools",
-        "写入运行环境",
-        flash_repl,
-        group=120,
-        image_filename=image_path,
-        include_in_toolbar=False)
 
     get_workbench().add_view(GBTranslator, 'GB2312编码转换器', 's')
 
