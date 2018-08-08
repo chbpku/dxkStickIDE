@@ -1,9 +1,12 @@
 from microbit import i2c
 _rmode=False
 def remote_on():
-  global mb_radio,_rmode
+  global mb_radio,_rmode,r_eval
   _rmode=True
-  import mb_radio
+  import mb_radio,radio
+  radio.on()
+  radio.config(length=64)
+  r_eval=mb_radio.r_eval
 def command(slot,bseq,size=0,raw=False):
   if isinstance(slot,tuple):
     return mb_radio.send(slot[0],bseq,size,not raw)

@@ -1,7 +1,7 @@
-import radio
+import radio,music
 from microbit import *
 radio.on()
-radio.config(length=100)
+radio.config(length=64)
 def get_id(addr):
   i2c.write(addr,b'get_id')
   return b"%02x%02x%02x%02x" % tuple(i2c.read(addr,4))
@@ -10,21 +10,24 @@ def get_type(addr):
   return i2c.read(addr,1)[0]
 while 1:
     sleep(10)
-    radio.config(channel=min(i2c.read(0x20,1)[0],100))
+    gid=i2c.read(0x20,1)[0]
+    radio.config(channel=gid%32,100)
     seq=radio.receive_bytes()
     if seq==None:
         continue
     seq=seq.split(b'\r')
     if len(seq)==2:
         grp,bseq=seq
-        try:
-            res=eval(bseq)
-            if res!=None:
-                radio.send_bytes(b'%r'%res)
-        except:
-            pass
+        if grp==-1 or grp==gid//32:
+            try:
+                res=eval(bseq)
+                if res!=None:
+                    radio.send_bytes(b'(%r,%d)'%(res,gid//32))
+            except:
+                display.scroll(str(seq))
+                pass
     if len(seq)==3:
-        id,bseq,size=seq
+        id,size,bseq=seq
         size=int(size)
         if len(id)==8:
             try:

@@ -1,6 +1,5 @@
 import radio
 from microbit import i2c
-radio.on()
 def channel():
   return i2c.read(0x20,1)[0]%32
 def group():
@@ -19,12 +18,8 @@ def send(id,bseq,size,to_int):
   if to_int:
     res=[int.from_bytes(t,'big') for t in res]
   return res
-def r_eval(seq,to_all=False):
+def r_eval(seq,grp=-1):
   gid=i2c.read(0x20,1)[0]
   radio.config(channel=gid%32)
-  if to_all:
-    gid=-1
-  else:
-    gid//=32
   return _send(b'%s\r%s'%(gid,seq))
   
