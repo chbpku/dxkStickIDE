@@ -8,4 +8,4 @@ def show(y,x,string,addr=None):
   sleep(len(string))
 def clear(addr=None):
   command(slot(addr,1),b'ClearScreen')
-  sleep(10)
+  sleep(15)
