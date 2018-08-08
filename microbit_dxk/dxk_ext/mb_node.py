@@ -1,4 +1,4 @@
-from mb_radio import r_eval
+from mb_radio import r_eval,channel,group
 from microbit import *
 def show(img,grp=-1):
   try:

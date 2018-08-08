@@ -22,4 +22,3 @@ def r_eval(seq,grp=-1):
   gid=i2c.read(0x20,1)[0]
   radio.config(channel=gid%32)
   return _send(b'%s\r%s'%(gid,seq))
-  
