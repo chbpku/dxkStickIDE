@@ -7,14 +7,12 @@ def show(img,grp=-1):
     return
   except:pass
   r_eval(b"display.show(Image.%s)"%img,grp)
-def scroll(text,grp=-1):
-  r_eval(b"display.scroll(%r)"%text,grp)
+def scroll(text,wait=0,grp=-1):
+  r_eval(b"display.scroll(%r,wait=%d)"%(text,wait),grp)
 def button(btn,grp=-1):
   res=[]
-  try:
-    for i in r_eval(b"button_%s.get_presses()"%btn.lower(),grp):
-      res.append(i)
-  except:pass
+  for i,g in r_eval(b"button_%s.get_presses()"%btn.lower(),grp):
+    res.append((int(i),g))
   return res
-def play(mid,grp=-1):
-  r_eval(b"music.play(music.%s)"%mid,grp)
+def play(mid,wait=0,grp=-1):
+  r_eval(b"music.play(music.%s,wait=%d)"%(mid,wait),grp)

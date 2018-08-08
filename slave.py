@@ -9,26 +9,26 @@ def get_type(addr):
   i2c.write(addr,b'get_type')
   return i2c.read(addr,1)[0]
 while 1:
-    sleep(10)
     gid=i2c.read(0x20,1)[0]
-    radio.config(channel=gid%32,100)
+    radio.config(channel=gid%32)
     seq=radio.receive_bytes()
     if seq==None:
         continue
     seq=seq.split(b'\r')
     if len(seq)==2:
         grp,bseq=seq
+        try:grp=int(grp)
+        except:continue
         if grp==-1 or grp==gid//32:
             try:
                 res=eval(bseq)
                 if res!=None:
-                    radio.send_bytes(b'(%r,%d)'%(res,gid//32))
-            except:
-                display.scroll(str(seq))
-                pass
+                    radio.send_bytes(b'%r\r%d'%(res,gid//32))
+            except:display.scroll(bseq)
     if len(seq)==3:
         id,size,bseq=seq
-        size=int(size)
+        try:size=int(size)
+        except:continue
         if len(id)==8:
             try:
                 if get_id(22)==id:
