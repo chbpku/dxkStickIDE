@@ -1,5 +1,5 @@
 from microbit import *
-from mb import get_type,channel
+from mb import get_type
 ta,tb=0,0
 display.clear()
 while 1:
@@ -28,7 +28,7 @@ while 1:
         import oled,temp_humi
         display.clear()
         while not (button_a.get_presses()+button_b.get_presses()):
-            chn=channel()
+            chn=i2c.read(0x20,1)[0]
             ptr=1
             for i in range(10):
                 display.set_pixel(i%4,i//4,9*bool(chn&ptr))
@@ -74,6 +74,13 @@ while 1:
                     display.set_pixel(i%5,i//5,int(9*l/410))
                     break
             music.pitch(1000-2*u,50,wait=0)
+            for i in range(15):
+                if u>=10:
+                    display.set_pixel(i%5,2+i//5,9)
+                    u-=10
+                else:
+                    display.set_pixel(i%5,2+i//5,int(9*u/10))
+                    break
             sleep(100)
         break
     elif ta==6 and tb==7:

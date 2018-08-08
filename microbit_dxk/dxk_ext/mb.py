@@ -4,8 +4,6 @@ def remote_on():
   global mb_radio,_rmode
   _rmode=True
   import mb_radio
-def channel():
-  return min(i2c.read(0x20,1)[0],100)
 def command(slot,bseq,size=0,raw=False):
   if isinstance(slot,tuple):
     return mb_radio.send(slot[0],bseq,size,not raw)
