@@ -428,6 +428,16 @@ def flash_repl():
     execute_command(list, "写入运行环境...")
 
 
+def flash_subnode():
+    """写入子节点控制代码"""
+    list = [
+        sys.executable.replace("thonny.exe", "python.exe"),
+        os.path.join(
+            os.path.dirname(__file__), 'flash_module', 'flash_subnode.py')
+    ]
+    execute_command(list, "写入子节点控制代码...")
+
+
 def flash_current_script_enabled():
     """Return false if flashing is not possible."""
     #TODO
@@ -451,7 +461,7 @@ def load_plugin():
         flash_repl,
         group=120,
         image_filename=image_path%'flash_env',
-        include_in_toolbar=False)
+        include_in_toolbar=True)
 
     get_workbench().add_command(
         "flashmicrobit",
@@ -462,6 +472,15 @@ def load_plugin():
         default_sequence="<Control-m>",
         group=120,
         image_filename=image_path%'flash_code',
+        include_in_toolbar=True)
+
+    get_workbench().add_command(
+        "flashmicrobitsubnode",
+        "tools",
+        "写入子节点控制代码",
+        flash_subnode,
+        group=120,
+        image_filename=image_path%'flash_subnode',
         include_in_toolbar=True)
 
     get_workbench().add_view(GBTranslator, 'GB2312编码转换器', 's')

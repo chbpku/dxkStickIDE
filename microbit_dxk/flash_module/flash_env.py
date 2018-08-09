@@ -15,7 +15,6 @@ dxk_folder = os.path.abspath(
 commands=[]
 for file in os.listdir(dxk_folder):
     if file.endswith('.py'):
-        print('加入模块: %s...' % file)
         commands.append("fd = open('{}', 'wb')".format(file))
         commands.append("f = fd.write")
         with open(os.path.join(dxk_folder, file), 'rb') as local:
