@@ -3,24 +3,26 @@ from mb import get_type
 ta,tb=0,0
 display.clear()
 while 1:
-    try:
-        ta=get_type(22)
+    ta=get_type(22)
+    if ta:
         for i in (0,1):
             for j in range(5):
                 display.set_pixel(i,j,9)
-    except:
+    else:
         for i in (0,1):
             for j in range(5):
                 display.set_pixel(i,j,0)
-    try:
-        tb=get_type(23)
+    tb=get_type(23)
+    if tb:
         for i in (0,1):
             for j in range(5):
                 display.set_pixel(i+3,j,9)
-    except:
+    else:
         for i in (0,1):
             for j in range(5):
                 display.set_pixel(i+3,j,0)
+    if ta==None or tb==None:
+        continue
     if ta>tb:
         ta,tb=tb,ta
     if ta==1 and tb==2:
@@ -35,11 +37,11 @@ while 1:
                 ptr*=2
             oled.clear()
             temp,humi=temp_humi.temp_humi()
-            oled.show(0,0,b'\xce\xc2\xb6\xc8\xa3\xba%d\xa1\xe6'%temp)
-            oled.show(2,0,b'\xca\xaa\xb6\xc8\xa3\xba%d%%'%humi)
+            oled.show(0,0,b'\xce\xc2\xb6\xc8\xa3\xba%s\xa1\xe6'%temp)
+            oled.show(2,0,b'\xca\xaa\xb6\xc8\xa3\xba%s%%'%humi)
             temp,humi=temp_humi.temp(),temp_humi.humi()
-            oled.show(4,0,b'\xce\xc2\xb6\xc8\xa3\xba%d\xa1\xe6'%temp)
-            oled.show(6,0,b'\xca\xaa\xb6\xc8\xa3\xba%d%%'%humi)
+            oled.show(4,0,b'\xce\xc2\xb6\xc8\xa3\xba%s\xa1\xe6'%temp)
+            oled.show(6,0,b'\xca\xaa\xb6\xc8\xa3\xba%s%%'%humi)
             sleep(500)
         break
     elif ta==3 and tb==4:

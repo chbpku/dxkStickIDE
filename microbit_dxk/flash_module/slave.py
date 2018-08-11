@@ -3,8 +3,12 @@ from microbit import *
 radio.on()
 radio.config(length=64)
 def get_id(addr):
-  i2c.write(addr,b'get_id')
-  return b"%02x%02x%02x%02x" % tuple(i2c.read(addr,4))
+  try:
+    i2c.write(addr,b'get_id')
+    raw=i2c.read(addr,16)
+    return b"%02x%02x%02x%02x"%(raw[3],raw[2],raw[1],raw[0])
+  except:
+    return None
 def get_type(addr):
   i2c.write(addr,b'get_type')
   return i2c.read(addr,1)[0]
@@ -15,7 +19,15 @@ for i in range(25):
 for i in range(25):
   display.set_pixel(i%5,i//5,0)
   sleep(10)
+id_a=get_id(22)
+id_b=get_id(23)
+timer=0
 while 1:
+  timer+=1
+  if timer>5000:
+    timer-=5000
+    id_a=get_id(22)
+    id_b=get_id(23)
   gid=i2c.read(0x20,1)[0]
   radio.config(channel=gid%32)
   seq=radio.receive_bytes()
@@ -31,20 +43,20 @@ while 1:
         res=eval(bseq)
         if res!=None:
           radio.send_bytes(b'%r\r%d'%(res,gid//32))
-      except:display.scroll(bseq)
+      except:pass
   if len(seq)==3:
     id,size,bseq=seq
     try:size=int(size)
     except:continue
     if len(id)==8:
       try:
-        if get_id(22)==id:
+        if id_a==id:
           i2c.write(22,bseq)
           if size:
             radio.send_bytes(i2c.read(22,size))
       except:pass
       try:
-        if get_id(23)==id:
+        if id_b==id:
           i2c.write(23,bseq)
           if size:
             radio.send_bytes(i2c.read(23,size))

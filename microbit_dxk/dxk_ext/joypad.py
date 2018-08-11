@@ -7,6 +7,8 @@ def values(addr=None):
   data=command(slot(addr,7),b'get_key_val',9,True)
   if isinstance(data,bytes):
     return conv(data)
+  if data==None:
+    return None,None
   return [conv(i) for i in data]
 def keys(addr=None):
   return values(addr)[0]

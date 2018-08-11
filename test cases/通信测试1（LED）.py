@@ -4,7 +4,7 @@ import music
 mb.remote_on()
 counter=0
 imap=Image(5,5)
-flag=0
+flag=1
 while 1:
     x=mb_node.button('a')
     if x:
@@ -19,6 +19,10 @@ while 1:
     if y and y[0][0]:
         if flag:
             led.on()
+            sleep(10)
+            mb_node.play('POWER_UP')
         else:
             led.off()
+            sleep(10)
+            mb_node.play('POWER_DOWN')
         flag=not flag
