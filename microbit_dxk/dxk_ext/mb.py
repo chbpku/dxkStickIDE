@@ -1,8 +1,8 @@
 from microbit import i2c
 _rmode=False
 _short=1
-_iter_type=None
-_iter_res=[]
+_type=None
+_res=[]
 def remote_on(short=1):
   global mb_radio,_rmode,r_eval,_short
   _rmode=True
@@ -15,34 +15,34 @@ def command(slot,bseq,size=0,raw=False):
   if isinstance(slot,tuple):
     return mb_radio.send(slot[0],bseq,size,not raw)
   if slot==None:
-    _iter_res.clear()
+    _res.clear()
     flag=0
     try:
-      if get_type(22)==_iter_type:
+      if get_type(22)==_type:
         rr=command(22,bseq,size,raw)
         if rr!=None:
-          _iter_res.append(rr)
+          _res.append(rr)
         flag=1
     except:pass
     try:
-      if get_type(23)==_iter_type:
+      if get_type(23)==_type:
         rr=command(23,bseq,size,raw)
         if rr!=None:
-          _iter_res.append(rr)
+          _res.append(rr)
         flag=1
     except:pass
     if _rmode and not (flag and _short):
-      rr=command((_iter_type,),bseq,size,raw)
+      rr=command((_type,),bseq,size,raw)
       if rr!=None:
         if isinstance(rr,tuple):
-          _iter_res.extend(rr)
+          _res.extend(rr)
         else:
-          _iter_res.append(rr)
-    if not _iter_res:
+          _res.append(rr)
+    if not _res:
       return None
-    if len(_iter_res)==1:
-      return _iter_res[0]
-    return tuple(_iter_res)
+    if len(_res)==1:
+      return _res[0]
+    return tuple(_res)
   try:
     i2c.write(slot,bseq)
     if size:
@@ -56,11 +56,16 @@ def get_type(addr):
   return command(slot(addr),b'get_type',1)
 def get_state(addr):
   return command(slot(addr),b'get_state',1)
-def slot(addr=None,type=None):
+def get_id(addr):
+  addr=slot(addr)
+  i2c.write(addr,b'get_id')
+  id=i2c.read(addr,16)
+  return "%02x%02x%02x%02x"%(id[3],id[2],id[1],id[0])
+def slot(addr,type=None):
   if isinstance(addr,int) or addr==None:
     if addr==None:
-      global _iter_type
-      _iter_type=type
+      global _type
+      _type=type
     return addr
   addr=addr.lower()
   if len(addr)<8:
@@ -75,4 +80,3 @@ def slot(addr=None,type=None):
     return 23
   if _rmode:
     return (addr,)
-  return None

@@ -9,7 +9,7 @@ def values(addr=None):
     return conv(data)
   if data==None:
     return None,None
-  return [conv(i) for i in data]
+  return tuple(conv(i) for i in data)
 def keys(addr=None):
   return values(addr)[0]
 def stickxy(addr=None):

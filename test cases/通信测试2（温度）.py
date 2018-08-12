@@ -9,10 +9,10 @@ while 1:
     data=temp_humi.temp_humi()
     tmp,hum,lig='--','--','--'
     if data:
-        if isinstance(data[0],int):
-            tmp,hum=data
-        else:
+        if isinstance(data[0],tuple):
             tmp,hum=data[0]
+        elif data[0]!=None:
+            tmp,hum=data
     data=light.value()
     if isinstance(data,int):
         lig=data

@@ -1,5 +1,6 @@
-from mb_radio import r_eval,channel,group
+from mb_radio import r_eval
 from microbit import *
+_res=[]
 def show(img,grp=-1):
   try:
     Image(img)
@@ -10,9 +11,9 @@ def show(img,grp=-1):
 def scroll(text,wait=0,grp=-1):
   r_eval(b"display.scroll(%r,wait=%d)"%(text,wait),grp)
 def button(btn,grp=-1):
-  res=[]
+  _res.clear()
   for i,g in r_eval(b"button_%s.get_presses()"%btn.lower(),grp):
-    res.append((int(i),g))
-  return res
+    _res.append((int(i),g))
+  return tuple(_res)
 def play(mid,wait=0,grp=-1):
   r_eval(b"music.play(music.%s,wait=%d)"%(mid,wait),grp)
