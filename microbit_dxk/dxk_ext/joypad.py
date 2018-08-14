@@ -1,4 +1,4 @@
-from mb import *
+from mb import command,slot,gc
 def conv(data):
   x,y=data[5]*256+data[6],data[7]*256+data[8]
   x=x-2048;y=2048-y
@@ -14,3 +14,4 @@ def keys(addr=None):
   return values(addr)[0]
 def stickxy(addr=None):
   return values(addr)[1]
+gc()

@@ -12,6 +12,12 @@ def get_id(addr):
 def get_type(addr):
   i2c.write(addr,b'get_type')
   return i2c.read(addr,1)[0]
+def update_cache():
+  global id_a,id_b,type_a,type_b
+  id_a=get_id(22)
+  id_b=get_id(23)
+  type_a=get_type(22)
+  type_b=get_type(23)
 music.play(music.POWER_UP,wait=False)
 for i in range(25):
   display.set_pixel(i%5,i//5,9)
@@ -19,16 +25,14 @@ for i in range(25):
 for i in range(25):
   display.set_pixel(i%5,i//5,0)
   sleep(10)
-id_a=get_id(22)
-id_b=get_id(23)
+update_cache()
 timer=0
 while 1:
   try:
     timer+=1
     if timer>5000:
       timer-=5000
-      id_a=get_id(22)
-      id_b=get_id(23)
+      update_cache()
     gid=i2c.read(0x20,1)[0]
     radio.config(channel=gid%32)
     seq=radio.receive_bytes()
@@ -63,13 +67,13 @@ while 1:
       else:
         id=int(id)
         try:
-          if get_type(22)==id:
+          if type_a==id:
             i2c.write(22,bseq)
             if size:
               radio.send_bytes(i2c.read(22,size))
         except:pass
         try:
-          if get_type(23)==id:
+          if type_b==id:
             i2c.write(23,bseq)
             if size:
               radio.send_bytes(i2c.read(23,size))

@@ -7,7 +7,7 @@ def group():
   return i2c.read(0x20,1)[0]//32
 def _send(bytes,to_int):
   radio.send_bytes(bytes)
-  sleep(50)
+  sleep(10)
   _res.clear()
   tmp=radio.receive_bytes()
   while tmp!=None:

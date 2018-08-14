@@ -1,4 +1,4 @@
-from mb import *
+from mb import command,slot,gc
 from microbit import sleep
 def show(y,x,string,addr=None):
   if isinstance(string,bytes):
@@ -10,3 +10,4 @@ def show(y,x,string,addr=None):
 def clear(addr=None):
   command(slot(addr,1),b'ClearScreen')
   sleep(15)
+gc()

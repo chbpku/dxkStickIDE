@@ -1,4 +1,4 @@
-from mb import *
+from mb import command,slot,gc
 _res=[]
 def temp(addr=None):
   return command(slot(addr,2),b'get_temp',1)
@@ -18,3 +18,4 @@ def temp_humi(addr=None):
     if t>=128:t-=256
     _res.append((t,h))
   return tuple(_res)
+gc()

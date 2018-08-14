@@ -1,4 +1,5 @@
 from microbit import i2c
+from gc import collect as gc
 _rmode=False
 _short=1
 _type=None
@@ -80,3 +81,4 @@ def slot(addr,type=None):
     return 23
   if _rmode:
     return (addr,)
+gc()
