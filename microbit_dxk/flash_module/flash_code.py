@@ -1,6 +1,6 @@
-import os, microfs, sys
+import os, microfs, sys, tempfile
 
-code_dir = os.path.join(os.path.dirname(__file__), 'main.py')
+code_dir = os.path.join(tempfile.gettempdir(), 'main.py')
 print('写入当前代码...', end='')
 sys.stdout.flush()
 try:

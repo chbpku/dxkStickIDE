@@ -404,7 +404,7 @@ def flash_current_script():
     code = current_editor.get_text_widget().get("1.0", "end")
     try:
         ast.parse(code)
-        file_dir = os.path.join(os.path.dirname(__file__), 'flash_module', 'main.py')
+        file_dir = os.path.join(tempfile.gettempdir(), 'main.py')
         with open(file_dir, 'w', encoding='utf-8') as file:
             file.write(code)
         list = [
@@ -488,7 +488,7 @@ def load_plugin():
 
 import tkinter as tk
 from thonny.tktextext import TweakableText
-import re
+import re, tempfile
 
 
 class GBTranslator(tk.Frame):
