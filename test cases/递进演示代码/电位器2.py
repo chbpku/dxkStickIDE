@@ -1,3 +1,12 @@
+# 电位器控制灯泡-改进2
+# 硬件模块：
+# micro:bit×1；主板×1
+# 模块×2：电位器、LED灯泡
+# 简介：
+# 根据电位器读数设置LED灯泡状态
+# 加入记录LED状态的变量以防止重复发出指令
+# 在micro:bit显示屏上增加对电位器示数的显示
+
 import poten, led  # 导入模块控制库
 from microbit import sleep, display
 
