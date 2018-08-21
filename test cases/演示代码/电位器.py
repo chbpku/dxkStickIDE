@@ -1,3 +1,10 @@
+# 电位器控制闪烁小灯
+# 简介：
+# 通过读取电位器旋钮的读数控制LED灯泡闪烁与蜂鸣器发声的频率
+# 硬件模块：
+# micro:bit×1；主板×1
+# 模块×2：电位器、LED灯泡
+
 from microbit import *
 import music
 import poten, led  # 模块控制库
