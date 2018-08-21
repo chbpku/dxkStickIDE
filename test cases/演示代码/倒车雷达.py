@@ -11,7 +11,7 @@ led.off()
 dist = ultrasonic.value()
 update_timer = 0
 
-while 1:
+while True:
     # 每隔一段时间读取一次距离示数
     update_timer += 1
     if update_timer > 50:

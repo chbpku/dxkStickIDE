@@ -6,7 +6,7 @@ import poten, led  # 模块控制库
 t, led_on = 0, 0
 led.off()
 
-while 1:
+while True:
     # 向计时变量增加部分读数
     t += poten.value() or 1
     if t > 5000:

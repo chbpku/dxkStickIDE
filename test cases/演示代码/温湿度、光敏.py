@@ -10,7 +10,7 @@ led.off()
 timer=0
 light_read=0
 tmp,hum='--','--'
-while 1:
+while True:
     timer+=1
 
     # 每500帧更新温湿度读数

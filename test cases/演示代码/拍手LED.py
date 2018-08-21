@@ -13,7 +13,7 @@ t_led_delay = 0
 tloop = 0
 volumn = 0
 
-while 1:
+while True:
     tloop += 1
 
     # 每10帧取一次音量，保留最大值
