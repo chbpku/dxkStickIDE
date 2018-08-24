@@ -279,6 +279,7 @@ def save_hex(hex_file, path):
         raise ValueError('The path to flash must be for a .hex file.')
     with open(path, 'wb') as output:
         output.write(hex_file.encode('ascii'))
+        os.fsync(output) # to make sure the flashing process is done
 
 
 def flash(path_to_python=None, paths_to_microbits=None,

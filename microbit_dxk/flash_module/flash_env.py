@@ -1,7 +1,6 @@
 import os, uflash, microfs, sys
 
 # 1. uflash empty python environment
-print('写入Python解释器...')
 try:
     uflash.flash()
 except Exception as e:
@@ -27,6 +26,6 @@ for file in os.listdir(dxk_folder):
                 commands.append('f(' + repr(line) + ')')
             content = content[64:]
         commands.append('fd.close()')
-print('写入接口文件...')
+print('Flashing modules...')
 microfs.execute(commands)
-print('完成')
+print('Done.')
