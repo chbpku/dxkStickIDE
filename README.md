@@ -12,4 +12,4 @@ dxkStick Python语言教学套件的开发环境
 # 子目录说明
 - [Lessons]：案例汇总；
 - [Setup]：编程工具安装包；
-- [Test Cases]：用于测试硬件的代码；
+- [Test Cases]：用于测试硬件的代码。
