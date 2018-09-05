@@ -8,3 +8,8 @@ dxkStick Python语言教学套件的开发环境
 - 支持中文界面；
 - 内置[thonny-microbit插件](https://bitbucket.org/KauriRaba/thonny-microbit)；
 - 烧录程序时可以检测用到的dxkStick模块，并自动将相应的模块类库写入microbit的文件存储中。
+
+# 子目录说明
+- [Lessons]：案例汇总；
+- [Setup]：编程工具安装包；
+- [Test Cases]：用于测试硬件的代码；
