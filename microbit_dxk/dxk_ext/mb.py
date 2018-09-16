@@ -81,4 +81,6 @@ def slot(addr,type=None):
     return 23
   if _rmode:
     return (addr,)
+def get_bin():
+  return bin(i2c.read(0x20,1)[0])[2:].rjust(8,'0')
 gc()
