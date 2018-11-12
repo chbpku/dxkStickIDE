@@ -384,145 +384,160 @@ class MicrobitProxy(BackendProxy):
             self.reconnect()
 
 
-def execute_command(cmd, title):
-    """执行命令并监控输出结果"""
-    env = os.environ.copy()
-    env["PYTHONUSERBASE"] = THONNY_USER_BASE
-    proc = subprocess.Popen(
-        cmd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        universal_newlines=True,
-        env=env)
-    dlg = SubprocessDialog(get_workbench(), proc, title, autoclose=False)
-    dlg.wait_window()
+if 'tools':
+    import tkinter as tk
+    import re, tempfile
+    from thonny.tktextext import TweakableText
+    from thonny.globals import get_runner
 
+    def execute_command(cmd, title):
+        """执行命令并监控输出结果"""
+        env = os.environ.copy()
+        env["PYTHONUSERBASE"] = THONNY_USER_BASE
+        proc = subprocess.Popen(
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            universal_newlines=True,
+            env=env)
+        dlg = SubprocessDialog(get_workbench(), proc, title, autoclose=False)
+        dlg.wait_window()
 
-def flash_current_script():
-    """将当前脚本保存为main.py并写入"""
-    current_editor = get_workbench().get_editor_notebook().get_current_editor()
-    code = current_editor.get_text_widget().get("1.0", "end")
-    try:
-        ast.parse(code)
-        file_dir = os.path.join(tempfile.gettempdir(), 'main.py')
-        with open(file_dir, 'w', encoding='utf-8') as file:
-            file.write(code)
+    def flash_current_script():
+        """将当前脚本保存为main.py并写入"""
+        current_editor = get_workbench().get_editor_notebook(
+        ).get_current_editor()
+        code = current_editor.get_text_widget().get("1.0", "end")
+        try:
+            ast.parse(code)
+            file_dir = os.path.join(tempfile.gettempdir(), 'main.py')
+            with open(file_dir, 'w', encoding='utf-8') as file:
+                file.write(code)
+            list = [
+                sys.executable.replace("thonny.exe", "python.exe"),
+                os.path.join(
+                    os.path.dirname(__file__), 'flash_module', 'flash_code.py')
+            ]
+            execute_command(list, "写入当前脚本...")
+        except Exception:
+            error_msg = traceback.format_exc(0) + '\n'
+            showerror("错误", error_msg)
+
+    def flash_repl():
+        """写入Python解释器与套件接口"""
         list = [
             sys.executable.replace("thonny.exe", "python.exe"),
             os.path.join(
-                os.path.dirname(__file__), 'flash_module', 'flash_code.py')
+                os.path.dirname(__file__), 'flash_module', 'flash_env.py')
         ]
-        execute_command(list, "写入当前脚本...")
-    except Exception:
-        error_msg = traceback.format_exc(0) + '\n'
-        showerror("错误", error_msg)
+        execute_command(list, "写入运行环境...")
 
+    def flash_subnode():
+        """写入子节点控制代码"""
+        list = [
+            sys.executable.replace("thonny.exe", "python.exe"),
+            os.path.join(
+                os.path.dirname(__file__), 'flash_module', 'flash_subnode.py')
+        ]
+        execute_command(list, "写入子节点控制代码...")
 
-def flash_repl():
-    """写入Python解释器与套件接口"""
-    list = [
-        sys.executable.replace("thonny.exe", "python.exe"),
-        os.path.join(
-            os.path.dirname(__file__), 'flash_module', 'flash_env.py')
-    ]
-    execute_command(list, "写入运行环境...")
+    def flash_enabled():
+        """Return false if flashing is not possible."""
+        return get_workbench().get_option(
+            "run.backend_configuration") != 'BBC micro:bit'
 
+    def switch_interpreter():
+        target = 'Python (default)' if get_workbench().get_option(
+            "run.backend_configuration"
+        ) == 'BBC micro:bit' else 'BBC micro:bit'
+        get_workbench().set_option("run.backend_configuration", target)
+        get_runner().reset_backend()
 
-def flash_subnode():
-    """写入子节点控制代码"""
-    list = [
-        sys.executable.replace("thonny.exe", "python.exe"),
-        os.path.join(
-            os.path.dirname(__file__), 'flash_module', 'flash_subnode.py')
-    ]
-    execute_command(list, "写入子节点控制代码...")
+    def load_early_plugin():
+        """Adds micro:bit backend."""
+        get_workbench().add_backend("BBC micro:bit", MicrobitProxy)
 
+    def load_plugin():
+        """Adds flash button on GUI and commands under Tools menu."""
+        image_path = os.path.join(
+            os.path.dirname(__file__), "res", "run.%s.gif")
 
-def flash_current_script_enabled():
-    """Return false if flashing is not possible."""
-    #TODO
-    return True
+        get_workbench().add_command(
+            "flashmicrobitrepl",
+            "tools",
+            "写入运行环境",
+            flash_repl,
+            flash_enabled,
+            group=120,
+            image_filename=image_path % 'flash_env',
+            include_in_toolbar=True)
 
+        get_workbench().add_command(
+            "flashmicrobit",
+            "tools",
+            "写入当前代码",
+            flash_current_script,
+            flash_enabled,
+            default_sequence="<Control-m>",
+            group=120,
+            image_filename=image_path % 'flash_code',
+            include_in_toolbar=True)
 
-def load_early_plugin():
-    """Adds micro:bit backend."""
-    get_workbench().add_backend("BBC micro:bit", MicrobitProxy)
+        get_workbench().add_command(
+            "flashmicrobitsubnode",
+            "tools",
+            "写入子节点控制代码",
+            flash_subnode,
+            flash_enabled,
+            group=120,
+            image_filename=image_path % 'flash_subnode',
+            include_in_toolbar=True)
 
+        get_workbench().add_command(
+            "switchmicrobitinterpreter",
+            "tools",
+            "切换命令行解释器",
+            switch_interpreter,
+            group=120,
+            image_filename=image_path % 'switch',
+            include_in_toolbar=True)
 
-def load_plugin():
-    """Adds flash button on GUI and commands under Tools menu."""
-    image_path = os.path.join(
-        os.path.dirname(__file__), "res", "run.%s.gif")
+        get_workbench().add_view(GBTranslator, 'GB2312编码转换器', 's')
 
-    get_workbench().add_command(
-        "flashmicrobitrepl",
-        "tools",
-        "写入运行环境",
-        flash_repl,
-        group=120,
-        image_filename=image_path%'flash_env',
-        include_in_toolbar=True)
+    class GBTranslator(tk.Frame):
+        def __init__(self, master):
+            super().__init__(master)
+            self.textl = TweakableText(self, height=10, width=40)
+            self.textl.pack(side='left', fill='both', padx=5, pady=5)
+            self.textr = TweakableText(self, height=10, width=40)
+            self.textr.pack(side='right', fill='both', padx=5, pady=5)
+            frame = tk.Frame(self)
+            frame.pack(fill='both')
+            tk.Button(
+                frame, text='=文本解码为GB2312=>', command=self.encode_gb).pack(
+                    side='top', pady=5, fill='x')
+            tk.Button(
+                frame, text='<=GB2312编码为文本=', command=self.decode_gb).pack(
+                    side='top', pady=(0, 5), fill='x')
 
-    get_workbench().add_command(
-        "flashmicrobit",
-        "tools",
-        "写入当前代码",
-        flash_current_script,
-        flash_current_script_enabled,
-        default_sequence="<Control-m>",
-        group=120,
-        image_filename=image_path%'flash_code',
-        include_in_toolbar=True)
+        def encode_gb(self):
+            raw = self.textl.get('0.0', 'end').split('\n')[:-1]
+            output = [
+                str(line.encode('GB2312')) if line else '' for line in raw
+            ]
+            self.textr.set_content('\n'.join(output))
 
-    get_workbench().add_command(
-        "flashmicrobitsubnode",
-        "tools",
-        "写入子节点控制代码",
-        flash_subnode,
-        group=120,
-        image_filename=image_path%'flash_subnode',
-        include_in_toolbar=True)
+        valid_b_seq = re.compile(r"""^(b"[^"]+")|(b'[^']+')""")
 
-    get_workbench().add_view(GBTranslator, 'GB2312编码转换器', 's')
-
-
-import tkinter as tk
-from thonny.tktextext import TweakableText
-import re, tempfile
-
-
-class GBTranslator(tk.Frame):
-    def __init__(self, master):
-        super().__init__(master)
-        self.textl = TweakableText(self, height=10, width=40)
-        self.textl.pack(side='left', fill='both', padx=5, pady=5)
-        self.textr = TweakableText(self, height=10, width=40)
-        self.textr.pack(side='right', fill='both', padx=5, pady=5)
-        frame = tk.Frame(self)
-        frame.pack(fill='both')
-        tk.Button(
-            frame, text='=文本解码为GB2312=>', command=self.encode_gb).pack(
-                side='top', pady=5, fill='x')
-        tk.Button(
-            frame, text='<=GB2312编码为文本=', command=self.decode_gb).pack(
-                side='top', pady=(0, 5), fill='x')
-
-    def encode_gb(self):
-        raw = self.textl.get('0.0', 'end').split('\n')[:-1]
-        output = [str(line.encode('GB2312')) if line else '' for line in raw]
-        self.textr.set_content('\n'.join(output))
-
-    valid_b_seq = re.compile(r"""^(b"[^"]+")|(b'[^']+')""")
-
-    def decode_gb(self):
-        raw = self.textr.get('0.0', 'end').split('\n')[:-1]
-        output = []
-        for line in raw:
-            if self.valid_b_seq.match(line):
-                try:
-                    output.append(eval(line).decode('GB2312'))
-                except:
+        def decode_gb(self):
+            raw = self.textr.get('0.0', 'end').split('\n')[:-1]
+            output = []
+            for line in raw:
+                if self.valid_b_seq.match(line):
+                    try:
+                        output.append(eval(line).decode('GB2312'))
+                    except:
+                        output.append('')
+                else:
                     output.append('')
-            else:
-                output.append('')
-        self.textl.set_content('\n'.join(output))
+            self.textl.set_content('\n'.join(output))

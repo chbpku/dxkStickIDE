@@ -14,10 +14,16 @@ def get_type(addr):
   return i2c.read(addr,1)[0]
 def update_cache():
   global id_a,id_b,type_a,type_b
-  id_a=get_id(22)
-  id_b=get_id(23)
-  type_a=get_type(22)
-  type_b=get_type(23)
+  try:
+    id_a=get_id(22)
+    type_a=get_type(22)
+  except:
+    id_a,type_a=None,None
+  try:
+    id_b=get_id(23)
+    type_b=get_type(23)
+  except:
+    id_b,type_b=None,None
 music.play(music.POWER_UP,wait=False)
 for i in range(25):
   display.set_pixel(i%5,i//5,9)
