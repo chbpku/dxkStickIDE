@@ -1,16 +1,16 @@
 from microbit import i2c
 from gc import collect as gc
 from array import array
-_rmode=False
-_short=1
-_type=None
+_rmo=False
+_sho=1
+_typ=None
 _res=[]
 _map=b'\x16\x1723456789:;<=>?'
 _tt=array('B',(-1 for i in range(16)))
 def remote_on(short=1):
-	global mb_radio,_rmode,r_eval,_short
-	_rmode=True
-	_short=short
+	global mb_radio,_rmo,r_eval,_sho
+	_rmo=True
+	_sho=short
 	import mb_radio,radio
 	radio.on()
 	radio.config(length=64)
@@ -31,12 +31,12 @@ def command(slot,bseq,size=0,raw=False):
 		_res.clear()
 		flag=0
 		for i in range(16):
-			if _tt[i]==_type:
+			if _tt[i]==_typ:
 				rr=_exe(_map[i],bseq,size,raw)
 				if rr!=None:_res.append(rr)
 				flag=1
-		if _rmode and not (flag and _short):
-			rr=command((_type,),bseq,size,raw)
+		if _rmo and not (flag and _sho):
+			rr=command((_typ,),bseq,size,raw)
 			if rr!=None:
 				if isinstance(rr,tuple):_res.extend(rr)
 				else:_res.append(rr)
@@ -47,17 +47,16 @@ def get_state(addr):
 	return command(slot(addr),b'get_state',1)
 def get_type(addr):
 	t=slot(addr);n=t-22-26*(t>23)
-	if _tt[n]<0:
-		_tt[n]=_exe(t,b'get_type',1,0) or 0
+	if _tt[n]<0:refresh(n)
 	return _tt[n]
 def get_id(addr):
 	raw=_exe(slot(addr),b'get_id',16,1)
 	return raw and '%08x'%int.from_bytes(raw[:4],'little')
 def slot(addr,type=None):
-	global _type
+	global _typ
 	if isinstance(addr,int) or addr==None:
 		if addr==None:
-			_type=type
+			_typ=type
 		return addr
 	addr=addr.lower()
 	if len(addr)<8:
@@ -65,8 +64,8 @@ def slot(addr,type=None):
 		if 'a'<=addr<='p':
 			return _map[ord(addr)-97]
 	for i in _map:
-		if _cn[i].id==addr:return i
-	if _rmode:return (addr,)
+		if get_type(i)>0 and get_id(i)==addr:return i
+	if _rmo:return (addr,)
 def get_bin():
 	tmp=i2c.read(32,1)[0]
 	res,ptr='',1
