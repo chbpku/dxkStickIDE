@@ -31,7 +31,6 @@ def command(slot,bseq,size=0,raw=False):
 		_res.clear()
 		flag=0
 		for i in range(16):
-			if _tt[i]==255:refresh(i)
 			if _tt[i]==_typ:
 				rr=_exe(_map[i],bseq,size,raw)
 				if rr!=None:_res.append(rr)
@@ -76,4 +75,5 @@ def get_bin():
 	return res
 def refresh(p):
 	_tt[p]=_exe(_map[p],b'get_type',1,0) or 0
+for i in range(16):refresh(i)
 gc()
