@@ -1,4 +1,4 @@
-from microbit import i2c
+from microbit import i2c,display
 from gc import collect as gc
 from array import array
 _rmo=False
@@ -6,7 +6,7 @@ _sho=1
 _typ=None
 _res=[]
 _map=b'\x16\x1723456789:;<=>?'
-_tt=array('B',(-1 for i in range(16)))
+_tt=array('B',(255 for i in range(16)))
 def remote_on(short=1):
 	global mb_radio,_rmo,r_eval,_sho
 	_rmo=True
@@ -31,6 +31,7 @@ def command(slot,bseq,size=0,raw=False):
 		_res.clear()
 		flag=0
 		for i in range(16):
+			if _tt[i]==255:refresh(i)
 			if _tt[i]==_typ:
 				rr=_exe(_map[i],bseq,size,raw)
 				if rr!=None:_res.append(rr)
@@ -47,7 +48,7 @@ def get_state(addr):
 	return command(slot(addr),b'get_state',1)
 def get_type(addr):
 	t=slot(addr);n=t-22-26*(t>23)
-	if _tt[n]<0:refresh(n)
+	if _tt[n]==255:refresh(n)
 	return _tt[n]
 def get_id(addr):
 	raw=_exe(slot(addr),b'get_id',16,1)
