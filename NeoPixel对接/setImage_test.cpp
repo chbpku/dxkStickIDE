@@ -72,23 +72,25 @@ void parser_seIC(string &command)
     int i = 8;
     for (int x = 0; x < 3; x++)
     {
+        int buffer_tmp = 0;
         for (; i < command_size; i++)
         {
             char c = command[i];
             if ('0' <= c && c <= '9')
             {
-                int *tmp = buffer[buffer_size++];
+                int *tmp = buffer[buffer_tmp++];
                 tmp[x] = (c - '0') * 11; //映射图片亮度0-9至RGB亮度0-99
                 continue;
             }
             if (!img_width) // 以第一行决定图片宽度
-                img_width = buffer_size;
+                img_width = buffer_tmp;
             if (c != ':') //非冒号则跳出
             {
                 i++; //跳过图片间分隔符
                 break;
             }
         }
+        if (!buffer_size || buffer_size > buffer_tmp)buffer_size = buffer_tmp;//取最小缓冲区长度
     }
 
     //应用缓冲区内容
@@ -104,8 +106,8 @@ void apply_image(char group, char x, char y, char mode, int img_width, int buffe
     {
         int xmin = max(0, x), xmax = min(SQUARE_SIZE, img_width); //横坐标遍历范围
         for (int bstart = 0, yptr = max(0, y);                    //分别用于遍历缓冲区与逐行遍历图片
-             bstart + img_width <= buffer_size && yptr < SQUARE_SIZE;
-             bstart += img_width, yptr++)
+            bstart + img_width <= buffer_size && yptr < SQUARE_SIZE;
+            bstart += img_width, yptr++)
         {
             for (int xptr = xmin; xptr < xmax; xptr++)
             {
