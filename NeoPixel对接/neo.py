@@ -33,6 +33,8 @@ class Group:
 	def shift(s,x,y=0):
 		if x<0:x+=128;if y<0:y+=128
 		command(s.a,b'shft%c%c%c'%(s.g,x,y))
+	def set_rainbow(s,t,x,n):
+		command(s.a,b'rnbl%c%c%c%c'%(s.g,t,x,n))
 def setup(groups,addr=None):
 	addr=slot(addr,15)
 	cmd=b'init%c'%len(groups)
