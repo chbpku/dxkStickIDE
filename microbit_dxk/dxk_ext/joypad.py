@@ -14,4 +14,10 @@ def keys(addr=None):
 	return values(addr)[0]
 def stickxy(addr=None):
 	return values(addr)[1]
+def stick_directions(addr=None):
+	tmp=values(addr)[1]
+	if tmp==None:return
+	xd=1 if tmp[0]>1000 else -1 if tmp[0]<-1000 else 0
+	yd=1 if tmp[1]>1000 else -1 if tmp[1]<-1000 else 0
+	return (xd,yd)
 gc()
