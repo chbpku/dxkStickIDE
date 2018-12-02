@@ -5,7 +5,7 @@ _rmo=False
 _sho=1
 _typ=None
 _res=[]
-_map=b'\x16\x1723456789:;<=>?'
+_map=lambda x:22+x+26*(x>1)
 _tt=array('B',(0,)*16)
 def remote_on(short=1):
 	global mb_radio,_rmo,r_eval,_sho
@@ -32,7 +32,7 @@ def command(slot,bseq,size=0,raw=False):
 		flag=0
 		for i in range(16):
 			if _tt[i]==_typ:
-				rr=_exe(_map[i],bseq,size,raw)
+				rr=_exe(_map(i),bseq,size,raw)
 				if rr!=None:_res.append(rr)
 				flag=1
 		if _rmo and not (flag and _sho):
@@ -61,9 +61,10 @@ def slot(addr,type=None):
 	if len(addr)<8:
 		addr=addr[-1].lower()
 		if 'a'<=addr<='p':
-			return _map[ord(addr)-97]
-	for i in _map:
-		if get_type(i)>0 and get_id(i)==addr:return i
+			return _map(ord(addr)-97)
+	for i in range(16):
+		tmp=_map(i)
+		if _tt[i]>0 and get_id(tmp)==addr:return tmp
 	if _rmo:return (addr,)
 def get_bin():
 	tmp=i2c.read(32,1)[0]
@@ -73,7 +74,7 @@ def get_bin():
 		ptr*=2
 	return res
 def refresh(p):
-	_tt[p]=_exe(_map[p],b'get_type',1,0) or 0
+	_tt[p]=_exe(_map(p),b'get_type',1,0) or 0
 for p in range(16):
-	_tt[p]=_exe(_map[p],b'get_type',1,0) or 0
+	_tt[p]=_exe(_map(p),b'get_type',1,0) or 0
 gc()
