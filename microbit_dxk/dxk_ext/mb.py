@@ -1,4 +1,4 @@
-from microbit import i2c,display
+from microbit import i2c
 from gc import collect as gc
 from array import array
 _rmo=False
@@ -6,7 +6,7 @@ _sho=1
 _typ=None
 _res=[]
 _map=b'\x16\x1723456789:;<=>?'
-_tt=array('B',(255 for i in range(16)))
+_tt=array('B',(0,)*16)
 def remote_on(short=1):
 	global mb_radio,_rmo,r_eval,_sho
 	_rmo=True
@@ -42,12 +42,11 @@ def command(slot,bseq,size=0,raw=False):
 				else:_res.append(rr)
 		if not _res:return None
 		return _res[0] if len(_res)==1 else tuple(_res)
-	return _exe(i,bseq,size,raw)
+	return _exe(slot,bseq,size,raw)
 def get_state(addr):
 	return command(slot(addr),b'get_state',1)
 def get_type(addr):
 	t=slot(addr);n=t-22-26*(t>23)
-	if _tt[n]==255:refresh(n)
 	return _tt[n]
 def get_id(addr):
 	raw=_exe(slot(addr),b'get_id',16,1)
@@ -75,5 +74,6 @@ def get_bin():
 	return res
 def refresh(p):
 	_tt[p]=_exe(_map[p],b'get_type',1,0) or 0
-for i in range(16):refresh(i)
+for p in range(16):
+	_tt[p]=_exe(_map[p],b'get_type',1,0) or 0
 gc()
