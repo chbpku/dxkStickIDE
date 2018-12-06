@@ -1,4 +1,4 @@
-dxkStickIDE可以运行在Windows、Linux和macOS等多种操作系统，请根据需要下载。
+dxkStickIDE可以运行在Windows和macOS等多种操作系统，请根据需要下载。
 
 # macOS系统安装注意
 macOS安装时需打开信任第三方应用的设置，方法为：
