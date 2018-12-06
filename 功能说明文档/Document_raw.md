@@ -16,6 +16,10 @@
     #### 参数:
     - addr(默认为None): 
     #### 返回值: 
+1. ### stick_directions(addr=None)
+    #### 参数:
+    - addr(默认为None): 
+    #### 返回值: 
 ---
 ## 模块：led
 1. ### on(addr=None)
@@ -38,6 +42,13 @@
     #### 参数:
     - short(默认为1): 
     #### 返回值: 
+1. ### _exe(s, b, l, r)
+    #### 参数:
+    - s: 
+    - b: 
+    - l: 
+    - r: 
+    #### 返回值: 
 1. ### command(slot, bseq, size=0, raw=False)
     #### 参数:
     - slot: 
@@ -45,11 +56,11 @@
     - size(默认为0): 
     - raw(默认为False): 
     #### 返回值: 
-1. ### get_type(addr)
+1. ### get_state(addr)
     #### 参数:
     - addr: 
     #### 返回值: 
-1. ### get_state(addr)
+1. ### get_type(addr)
     #### 参数:
     - addr: 
     #### 返回值: 
@@ -61,6 +72,13 @@
     #### 参数:
     - addr: 
     - type(默认为None): 
+    #### 返回值: 
+1. ### get_bin()
+    #### 参数: 无
+    #### 返回值: 
+1. ### refresh(p)
+    #### 参数:
+    - p: 
     #### 返回值: 
 ---
 ## 模块：mb_node
@@ -118,6 +136,81 @@
     - addr(默认为None): 
     #### 返回值: 
 ---
+## 模块：neo_color
+1. ### setup(grps, addr=None)
+    #### 参数:
+    - grps: 
+    - addr(默认为None): 
+    #### 返回值: 
+1. ### set_pixel(g, pos, c, addr=None)
+    #### 参数:
+    - g: 
+    - pos: 
+    - c: 
+    - addr(默认为None): 
+    #### 返回值: 
+1. ### set_pixel_range(g, pos, cs, addr=None)
+    #### 参数:
+    - g: 
+    - pos: 
+    - cs: 
+    - addr(默认为None): 
+    #### 返回值: 
+1. ### set_xy(g, x, y, c, addr=None)
+    #### 参数:
+    - g: 
+    - x: 
+    - y: 
+    - c: 
+    - addr(默认为None): 
+    #### 返回值: 
+1. ### fill(g, c, addr=None)
+    #### 参数:
+    - g: 
+    - c: 
+    - addr(默认为None): 
+    #### 返回值: 
+---
+## 模块：neo_img
+1. ### setup(grps, addr=None)
+    #### 参数:
+    - grps: 
+    - addr(默认为None): 
+    #### 返回值: 
+1. ### set_image(g, img, x=None, y=None, m=0, addr=None)
+    #### 参数:
+    - g: 
+    - img: 
+    - x(默认为None): 
+    - y(默认为None): 
+    - m(默认为0): 
+    - addr(默认为None): 
+    #### 返回值: 
+1. ### set_image_RGB(g, imgs, x=None, y=None, m=0, addr=None)
+    #### 参数:
+    - g: 
+    - imgs: 
+    - x(默认为None): 
+    - y(默认为None): 
+    - m(默认为0): 
+    - addr(默认为None): 
+    #### 返回值: 
+1. ### shift(g, x, y=0, addr=None)
+    #### 参数:
+    - g: 
+    - x: 
+    - y(默认为0): 
+    - addr(默认为None): 
+    #### 返回值: 
+1. ### set_rainbow(g, t, x, n, addr=None)
+    #### 参数:
+    - g: 
+    - t: 
+    - x: 
+    - n: 
+    - addr(默认为None): 
+    #### 返回值: 
+---
 ## 模块：oled
 1. ### show(y, x, string, addr=None)
     #### 参数:
@@ -147,6 +240,12 @@
     - addr(默认为None): 
     #### 返回值: 
 1. ### temp_humi(addr=None)
+    #### 参数:
+    - addr(默认为None): 
+    #### 返回值: 
+---
+## 模块：touch
+1. ### get(addr=None)
     #### 参数:
     - addr(默认为None): 
     #### 返回值: 

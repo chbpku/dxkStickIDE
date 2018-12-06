@@ -4,11 +4,13 @@ func_name = re.compile(r'(?<=def )([A-Za-z0-9_]+)\((.*)\)')
 code_dir = '../microbit_dxk/dxk_ext'
 
 output = open('Document_raw.md', 'w', encoding='utf-8')
-fprint = lambda *args, **kwargs: print(*args, **kwargs,file=output)
+fprint = lambda *args, **kwargs: print(*args, **kwargs, file=output)
 fprint('# dxkStick 开发者文档')
 for filename in os.listdir(code_dir):
+    if not filename.endswith('.py'):
+        continue
     fprint(f'## 模块：{path.splitext(filename)[0]}')
-    with open(path.join(code_dir, filename)) as file:
+    with open(path.join(code_dir, filename), encoding='utf-8') as file:
         for name, args in func_name.findall(file.read()):
             fprint(f"1. ### {name}({args.replace(',',', ')})")
             if args:

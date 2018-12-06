@@ -1,5 +1,4 @@
 import neo_color
-import neo_img
 from microbit import *
 
 grps=(1,3,2)
@@ -8,11 +7,11 @@ display.show(Image.HAPPY)
 
 while 1:
     for i in range(24):
-        neo_color.set_pixel(0,i,(10,0,0))
+        neo_color.set_pixel(0,i,(100,0,0))
     for i in range(24):
         neo_color.set_pixel(0,i,(0,0,0))
     for i in range(30):
-        neo_color.set_pixel(1,i,(0,10,0))
+        neo_color.set_pixel(1,i,(0,100,0))
     for i in range(30):
         neo_color.set_pixel(1,i,(0,0,0))
     for y in range(9):
