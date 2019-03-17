@@ -19,7 +19,7 @@
 |1111 (15)|P|63 (0x3f)|
 
 ## 生成代码
-```
+```python
 mapper=lambda x:22+x+26*(x>1) # 地址与编号映射关系
 line=lambda x:f"|{bin(x)[2:].rjust(4,'0')} ({x})|{chr(x+ord('A'))}|{mapper(x)} ({hex(mapper(x))})|" # 打印一行md
 
