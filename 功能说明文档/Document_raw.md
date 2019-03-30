@@ -1,4 +1,20 @@
 # dxkStick 开发者文档
+## 模块：clock
+1. ### time(addr=None)
+    #### 参数:
+    - addr(默认为None): 
+    #### 返回值: 
+1. ### set_time(Y, M, D, h, m, s, addr=None)
+    #### 参数:
+    - Y: 
+    - M: 
+    - D: 
+    - h: 
+    - m: 
+    - s: 
+    - addr(默认为None): 
+    #### 返回值: 
+---
 ## 模块：joypad
 1. ### conv(data)
     #### 参数:
