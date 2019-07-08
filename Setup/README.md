@@ -11,7 +11,7 @@ dxkStickIDE可以运行在Windows和macOS等多种操作系统，请根据需要
         * [Linux (x86_64架构, tar.gz格式)](https://github.com/thonny/thonny/releases/download/v3.1.2/thonny-3.1.2-x86_64.tar.gz)
         * [Linux (i686架构, tar.gz格式)](https://github.com/thonny/thonny/releases/download/v3.1.2/thonny-3.1.2-i686.tar.gz)
 
-1. 下载*setup.zip*并解压其中*plugins_setup*文件夹
+1. 下载[安装包zip文件](setup.zip)并解压其中*plugins_setup*文件夹
 
 1. 打开Thonny, 运行该文件夹下*setup.py*文件
     * 安装汉化插件**thonny_translate**
