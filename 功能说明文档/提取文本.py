@@ -1,7 +1,7 @@
 import os, sys, re
 from os import path
 func_name = re.compile(r'(?<=def )([A-Za-z0-9_]+)\((.*)\)')
-code_dir = '../microbit_dxk/dxk_ext'
+code_dir = '../plugins_setup/microbit_dxk/dxk_ext'
 
 output = open('Document_raw.md', 'w', encoding='utf-8')
 fprint = lambda *args, **kwargs: print(*args, **kwargs, file=output)
