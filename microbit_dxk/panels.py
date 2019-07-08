@@ -9,10 +9,6 @@ import re, threading
 class GBTranslator(Frame):
     def __init__(self, master):
         super().__init__(master)
-        self.textl = TweakableText(self, height=10, width=40)
-        self.textl.pack(side='left', fill='both', padx=5, pady=5)
-        self.textr = TweakableText(self, height=10, width=40)
-        self.textr.pack(side='right', fill='both', padx=5, pady=5)
         frame = Frame(self)
         frame.pack(fill='both')
         Button(
@@ -21,6 +17,10 @@ class GBTranslator(Frame):
         Button(
             frame, text='<=GB2312编码为文本=', command=self.decode_gb).pack(
                 side='top', pady=(0, 5), fill='x')
+        self.textl = TweakableText(self, height=10, width=40)
+        self.textl.pack(side='left', fill='both', padx=5, pady=5)
+        self.textr = TweakableText(self, height=10, width=40)
+        self.textr.pack(side='right', fill='both', padx=5, pady=5)
 
     def encode_gb(self):
         raw = self.textl.get('0.0', 'end').split('\n')[:-1]
