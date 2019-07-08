@@ -10,6 +10,7 @@ except Exception as e:
 
 
 def install_file(src, dst):
+    print('安装文件: %s => %s' % (src, dst))
     try:
         os.remove(dst)
     except:
@@ -18,6 +19,7 @@ def install_file(src, dst):
 
 
 def install_folder(src, dst):
+    print('安装文件夹: %s => %s' % (src, dst))
     shutil.rmtree(dst, 1)
     shutil.copytree(src, dst)
 
@@ -27,6 +29,10 @@ targets = [
     ('thonny_translate', 'thonny_translate'),
     ('microbit_dxk', 'microbit_dxk'),
 ]
+
+x = input('是否安装精简版库? Y/N (默认为N):')
+if x and x.lower()[0] == 'y':
+    targets.append(('dxk_compact_ext', 'microbit_dxk/dxk_ext'))
 
 for s, d in targets:
     src_path = os.path.join(src_dir, s)
