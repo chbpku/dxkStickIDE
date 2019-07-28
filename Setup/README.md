@@ -11,7 +11,8 @@ dxkStickIDE可以运行在Windows和macOS等多种操作系统，请根据需要
         * [Linux (x86_64架构, tar.gz格式)](https://github.com/thonny/thonny/releases/download/v3.1.2/thonny-3.1.2-x86_64.tar.gz)
         * [Linux (i686架构, tar.gz格式)](https://github.com/thonny/thonny/releases/download/v3.1.2/thonny-3.1.2-i686.tar.gz)
 
-1. 下载setup.zip并解压其中plugins_setup文件夹
+1. 下载[setup.zip][1]并解压其中plugins_setup文件夹
+    * [下载地址][1]
 
 1. 打开Thonny, 运行该文件夹下*setup.py*文件
     * 安装汉化插件**thonny_translate**
@@ -19,3 +20,5 @@ dxkStickIDE可以运行在Windows和macOS等多种操作系统，请根据需要
 
 # win7系统安装注意
 win7系统需要安装驱动程序，可以下载本目录下的【mbedWinSerial_16466.exe】，或者在【 https://os.mbed.com/docs/latest/tutorials/windows-serial-driver.html 】下载。
+
+[1]: https://github.com/chbpku/dxkStickIDE/releases/download/v1.0/setup.zip
