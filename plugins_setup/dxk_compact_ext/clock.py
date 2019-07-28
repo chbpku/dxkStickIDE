@@ -1,7 +1,7 @@
 from mb import _exe,gc
 _=[0]*6
 def time(addr):
-	_exe(addr,b'getT',6,1)
+	t=_exe(addr,b'getT',6,1)
 	try:
 		for i in range(6):
 			_[i]=t[i]-1
