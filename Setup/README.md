@@ -21,4 +21,4 @@ dxkStickIDE可以运行在Windows和macOS等多种操作系统，请根据需要
 # win7系统安装注意
 win7系统需要安装驱动程序，可以下载本目录下的【mbedWinSerial_16466.exe】，或者在【 https://os.mbed.com/docs/latest/tutorials/windows-serial-driver.html 】下载。
 
-[1]: https://github.com/chbpku/dxkStickIDE/releases/download/v1.0/setup.zip
+[1]: https://github.com/chbpku/dxkStickIDE/releases/download/v1.1/setup.zip
